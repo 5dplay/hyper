@@ -5,6 +5,7 @@ import {getDecoratedEnv} from './plugins';
 import {productName, version} from './package.json';
 import * as config from './config';
 import {IPty, IWindowsPtyForkOptions, spawn as npSpawn} from 'node-pty';
+import { timingSafeEqual } from 'crypto';
 
 const createNodePtyError = () =>
   new Error(
@@ -90,12 +91,14 @@ export default class Session extends EventEmitter {
   batcher: DataBatcher | null;
   shell: string | null;
   ended: boolean;
+  logPath: string | null;
   constructor(options: SessionOptions) {
     super();
     this.pty = null;
     this.batcher = null;
     this.shell = null;
     this.ended = false;
+    this.logPath = null;
     this.init(options);
   }
 

@@ -11,7 +11,9 @@ import {
   SESSION_SET_XTERM_TITLE,
   SESSION_SET_CWD,
   SESSION_SEARCH,
-  SESSION_SEARCH_CLOSE
+  SESSION_SEARCH_CLOSE,
+  SESSION_START_LOG,
+  SESSION_STOP_LOG
 } from '../constants/sessions';
 import {sessionState, session, HyperActions} from '../hyper';
 
@@ -30,7 +32,8 @@ function Session(obj: Immutable.DeepPartial<session>) {
     cleared: false,
     search: false,
     shell: '',
-    pid: null
+    pid: null,
+    logging: false
   };
   return Immutable(x).merge(obj);
 }
@@ -128,7 +131,28 @@ const reducer = (state: ImmutableType<sessionState> = initialState, action: Hype
         return state.setIn(['sessions', state.activeUid, 'cwd'], action.cwd);
       }
       return state;
-
+    case SESSION_START_LOG:
+      return state.merge(
+        {
+          sessions: {
+            [state.activeUid!]: {
+              logging: true
+            }
+          }
+        },
+        {deep: true}
+      );
+      case SESSION_STOP_LOG:
+        return state.merge(
+          {
+            sessions: {
+              [state.activeUid!]: {
+                logging: false
+              }
+            }
+          },
+          {deep: true}
+        );
     default:
       return state;
   }

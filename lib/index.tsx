@@ -79,6 +79,7 @@ rpc.on('session data', d => {
   // the uid is a uuid v4 so it's 36 chars long
   const uid = d.slice(0, 36);
   const data = d.slice(36);
+  //console.log('render recv data: ' + data);
   store_.dispatch(sessionActions.addSessionData(uid, data));
 });
 
@@ -140,6 +141,14 @@ rpc.on('session search', () => {
 
 rpc.on('session search close', () => {
   store_.dispatch(sessionActions.closeSearch());
+});
+
+rpc.on('session start log', () => {
+  store_.dispatch(sessionActions.startLog());
+});
+
+rpc.on('session stop log', () => {
+  store_.dispatch(sessionActions.stopLog());
 });
 
 rpc.on('termgroup add req', ({activeUid}) => {

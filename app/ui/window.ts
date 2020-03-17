@@ -135,6 +135,7 @@ export function newWindow(
     const {session, options} = createSession(extraOptions);
 
     sessions.set(options.uid, session);
+    console.log('session uid=' + options.uid)
     rpc.emit('session add', {
       rows: options.rows,
       cols: options.cols,
@@ -177,20 +178,34 @@ export function newWindow(
       session.resize({cols, rows});
     }
   });
-  rpc.on('data', ({uid, data, escaped}) => {
+  rpc.on('data', ({uid, data, escaped}) => {    //data from render process, only input.
     const session = sessions.get(uid);
     if (session) {
       if (escaped) {
         const escapedData = session.shell.endsWith('cmd.exe')
           ? `"${data}"` // This is how cmd.exe does it
           : `'${data.replace(/'/g, `'\\''`)}'`; // Inside a single-quoted string nothing is interpreted
-
         session.write(escapedData);
       } else {
         session.write(data);
       }
     }
   });
+
+  rpc.on('start session log', uid => {
+    const session = sessions.get(uid);
+    if (session) {
+      console.log('start log uid: ' + uid);
+    }
+  });
+
+  rpc.on('stop session log', uid => {
+    const session = sessions.get(uid);
+    if (session) {
+      console.log('stop log uid: ' + uid);
+    }
+  });
+
   rpc.on('info renderer', ({uid, type}) => {
     // Used in the "About" dialog
     setRendererType(uid, type);

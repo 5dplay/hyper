@@ -117,6 +117,7 @@ export type session = {
   url: string | null;
   splitDirection?: string;
   activeUid?: string;
+  logging: boolean;
 };
 export type sessionState = {
   sessions: Record<string, session>;

@@ -114,7 +114,13 @@ const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
     if (getConfig().showHamburgerMenu) {
       Menu.getApplicationMenu()!.popup({x: 15, y: 15});
     }
-  }
+  },
+  'session:startLog': focusedWindow => {
+    focusedWindow && focusedWindow.rpc.emit('session start log');
+  },
+  'session:stopLog': focusedWindow => {
+    focusedWindow && focusedWindow.rpc.emit('session stop log');
+  },
 };
 
 //Special numeric command

@@ -14,7 +14,9 @@ import {
   SESSION_USER_DATA,
   SESSION_SET_XTERM_TITLE,
   SESSION_SEARCH,
-  SESSION_SEARCH_CLOSE
+  SESSION_SEARCH_CLOSE,
+  SESSION_START_LOG,
+  SESSION_STOP_LOG
 } from '../constants/sessions';
 import {HyperState, session, HyperDispatch, HyperActions} from '../hyper';
 
@@ -154,6 +156,35 @@ export function closeSearch(uid?: string) {
     });
   };
 }
+
+export function startLog(uid?: string) {
+  return (dispatch: HyperDispatch, getState: () => HyperState) => {
+    const targetUid = uid || getState().sessions.activeUid!;
+    dispatch({
+      type: SESSION_START_LOG,
+      uid: targetUid,
+      effect() {
+        console.log(getState());
+        console.log('ui start log: ' + targetUid);
+      }
+    });
+  };
+}
+
+export function stopLog(uid?: string) {
+  return (dispatch: HyperDispatch, getState: () => HyperState) => {
+    const targetUid = uid || getState().sessions.activeUid!;
+    dispatch({
+      type: SESSION_STOP_LOG,
+      uid: targetUid,
+      effect() {
+        console.log(getState());
+        console.log('ui stop log: ' + targetUid);
+      }
+    });
+  };
+}
+
 
 export function sendSessionData(uid: string | null, data: any, escaped?: any) {
   return (dispatch: HyperDispatch, getState: () => HyperState) => {

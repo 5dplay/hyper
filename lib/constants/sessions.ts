@@ -14,6 +14,8 @@ export const SESSION_SET_XTERM_TITLE = 'SESSION_SET_XTERM_TITLE';
 export const SESSION_SET_CWD = 'SESSION_SET_CWD';
 export const SESSION_SEARCH = 'SESSION_SEARCH';
 export const SESSION_SEARCH_CLOSE = 'SESSION_SEARCH_CLOSE';
+export const SESSION_START_LOG = 'SESSION_START_LOG';
+export const SESSION_STOP_LOG = 'SESSION_STOP_LOG';
 
 export interface SessionAddAction {
   type: typeof SESSION_ADD;
@@ -89,6 +91,16 @@ export interface SessionSearchCloseAction {
   uid: string;
 }
 
+export interface SessionStartLogAction {
+  type: typeof SESSION_START_LOG;
+  uid: string;
+}
+
+export interface SessionStopLogAction {
+  type: typeof SESSION_STOP_LOG;
+  uid: string;
+}
+
 export type SessionActions =
   | SessionAddAction
   | SessionResizeAction
@@ -105,4 +117,6 @@ export type SessionActions =
   | SessionSetXtermTitleAction
   | SessionSetCwdAction
   | SessionSearchAction
-  | SessionSearchCloseAction;
+  | SessionSearchCloseAction
+  | SessionStartLogAction
+  | SessionStopLogAction;

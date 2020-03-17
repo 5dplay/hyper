@@ -40,5 +40,7 @@
   "editor:deleteEndLine": "ctrl+end",
   "editor:clearBuffer": "ctrl+shift+k",
   "editor:break": "ctrl+c",
-  "plugins:update": "ctrl+shift+u"
+  "plugins:update": "ctrl+shift+u",
+  "session:startLog": "ctrl+shift+q",
+  "session:stopLog": "ctrl+shift+r"
 }

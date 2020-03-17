@@ -44,6 +44,23 @@ export default (
         type: 'separator'
       },
       {
+        label: 'Start Log',
+        accelerator: commandKeys['session:startLog'],
+        click(item, focusedWindow) {
+          execCommand('session:startLog', focusedWindow);
+        }
+      },
+      {
+        label: 'Stop Log',
+        accelerator: commandKeys['session:stopLog'],
+        click(item, focusedWindow) {
+          execCommand('session:stopLog', focusedWindow);
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
         label: 'Close',
         accelerator: commandKeys['pane:close'],
         click(item, focusedWindow) {
