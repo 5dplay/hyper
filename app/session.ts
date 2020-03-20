@@ -7,6 +7,9 @@ import * as config from './config';
 import {IPty, IWindowsPtyForkOptions, spawn as npSpawn} from 'node-pty';
 import { timingSafeEqual } from 'crypto';
 
+import {Client as sshClient, ClientChannel} from 'ssh2';
+
+
 const createNodePtyError = () =>
   new Error(
     '`node-pty` failed to load. Typically this means that it was built incorrectly. Please check the `readme.md` to more info.'
@@ -86,7 +89,7 @@ interface SessionOptions {
   shell: string;
   shellArgs: string[];
 }
-export default class Session extends EventEmitter {
+export class Session extends EventEmitter {
   pty: IPty | null;
   batcher: DataBatcher | null;
   shell: string | null;
@@ -206,5 +209,93 @@ export default class Session extends EventEmitter {
     }
     this.emit('exit');
     this.ended = true;
+  }
+}
+
+
+interface SshSessionOptions {
+  uid: string;
+  rows: number;
+  cols: number;
+}
+
+export class SshSession extends EventEmitter {
+  pty: sshClient | null;
+  ptyStream: ClientChannel | null | undefined;
+  batcher: DataBatcher | null;
+  constructor(options: SshSessionOptions) {
+    super();
+    this.batcher = null;
+    this.pty = new sshClient();
+    this.ptyStream = null;
+    this.init(options);
+  }
+
+  init({uid, rows, cols}: SshSessionOptions) {
+    this.pty?.connect({
+      host: '89.208.255.6',
+      port: 28664,
+      username: 'root',
+      password: 'tusLUCvf3TsD'
+    });
+    this.pty?.on('ready', () => {
+      const ret = this.pty?.shell({rows, cols}, (err: Error | undefined, channel: ClientChannel | undefined) => {
+        this.ptyStream = channel;
+        this.ptyStream?.on('close', () => {
+          console.log('stream close');
+          this.pty?.end();
+          this.pty = null;
+        });
+        this.batcher = new DataBatcher(uid);
+        this.ptyStream?.on('data', (data: any) => {
+          this.batcher?.write(data as any);
+        });
+        this.batcher.on('flush', data => {
+          this.emit('data', data);
+        });
+      });
+      if (ret == false) {
+        //Returns false if you should wait for the continue event before sending any more traffic.
+      }
+
+    });
+  }
+
+  write(data: string) {
+    if (this.ptyStream) {
+      this.ptyStream.write(data);
+    } else {
+      console.warn('Warning: Attempted to write to a session with no pty');
+    }
+  }
+
+  resize({cols, rows}: {cols: number; rows: number}) {
+    if (this.ptyStream) {
+      try {
+        this.ptyStream.setWindow(cols, rows, 480, 640);
+      } catch (err) {
+        console.error(err.stack);
+      }
+    } else {
+      console.warn('Warning: Attempted to resize a session with no pty');
+    }
+  }
+
+  exit() {
+    this.destroy();
+  }
+  
+  destroy() {
+    if (this.ptyStream) {
+      try {
+        this.ptyStream.end();
+        this.ptyStream = null;
+      } catch (err) {
+        console.error('exit error', err.stack);
+      }
+    } else {
+      console.warn('Warning: Attempted to destroy a session with no pty');
+    }
+    this.emit('exit ssh');
   }
 }

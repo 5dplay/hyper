@@ -10,7 +10,7 @@ import {icon, homeDirectory} from '../config/paths';
 import createRPC from '../rpc';
 import notify from '../notify';
 import fetchNotifications from '../notifications';
-import Session from '../session';
+import {Session, SshSession} from '../session';
 import contextMenuTemplate from './contextmenu';
 import {execCommand} from '../commands';
 import {setRendererType, unsetRendererType} from '../utils/renderer-utils';
@@ -127,6 +127,7 @@ export function newWindow(
     const options = decorateSessionOptions(defaultOptions);
     const DecoratedSession = decorateSessionClass(Session);
     const session = new DecoratedSession(options);
+    console.log('uid=' + uid);
     sessions.set(uid, session);
     return {session, options};
   }
@@ -135,7 +136,8 @@ export function newWindow(
     const {session, options} = createSession(extraOptions);
 
     sessions.set(options.uid, session);
-    console.log('session uid=' + options.uid)
+    console.log('options.uid=' + options.uid);
+    
     rpc.emit('session add', {
       rows: options.rows,
       cols: options.cols,
@@ -156,6 +158,54 @@ export function newWindow(
       sessions.delete(options.uid);
     });
   });
+
+  function createSshSession(extraOptions: any = {}) {
+    const uid = uuidv4();
+
+    // remove the rows and cols, the wrong value of them will break layout when init create
+    const defaultOptions = Object.assign(
+      {
+        cwd: workingDirectory,
+        splitDirection: undefined,
+        shell: cfg.shell,
+        shellArgs: cfg.shellArgs && Array.from(cfg.shellArgs)
+      },
+      extraOptions,
+      {uid}
+    );
+    const options = decorateSessionOptions(defaultOptions);
+    const DecoratedSession = decorateSessionClass(SshSession);
+    const session = new DecoratedSession(options);
+    sessions.set(uid, session);
+    return {session, options};
+  }
+
+  rpc.on('new ssh', extraOptions => {
+    const {session, options} = createSshSession(extraOptions);
+
+    sessions.set(options.uid, session);
+    console.log('ssh options.uid=' + options.uid)
+    rpc.emit('session add', {
+      rows: options.rows,
+      cols: options.cols,
+      uid: options.uid,
+      splitDirection: options.splitDirection,
+      shell: null,
+      pid: null,
+      activeUid: options.activeUid
+    });
+
+    session.on('data', (data: any) => {
+      rpc.emit('session data', data);
+    });
+
+    session.on('exit', () => {
+      rpc.emit('session exit', {uid: options.uid});
+      unsetRendererType(options.uid);
+      sessions.delete(options.uid);
+    });
+  });
+
 
   rpc.on('exit', ({uid}) => {
     const session = sessions.get(uid);

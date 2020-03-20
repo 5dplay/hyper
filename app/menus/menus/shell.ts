@@ -17,6 +17,12 @@ export default (
         }
       },
       {
+        label: 'New Tab SSH',
+        click(item, focusedWindow) {
+          execCommand('tab:newSsh', focusedWindow);
+        }
+      },
+      {
         label: 'New Window',
         accelerator: commandKeys['window:new'],
         click(item, focusedWindow) {

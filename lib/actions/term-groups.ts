@@ -3,6 +3,7 @@ import {
   DIRECTION,
   TERM_GROUP_RESIZE,
   TERM_GROUP_REQUEST,
+  TERM_GROUP_REQUEST_SSH,
   TERM_GROUP_EXIT,
   TERM_GROUP_EXIT_ACTIVE
 } from '../constants/term-groups';
@@ -48,6 +49,23 @@ export function requestTermGroup(activeUid: string) {
         const {ui} = getState();
         const {cwd} = ui;
         rpc.emit('new', {
+          isNewGroup: true,
+          cwd,
+          activeUid
+        });
+      }
+    });
+  };
+}
+
+export function requestTermGroupSSH(activeUid: string) {
+  return (dispatch: HyperDispatch, getState: () => HyperState) => {
+    dispatch({
+      type: TERM_GROUP_REQUEST_SSH,
+      effect: () => {
+        const {ui} = getState();
+        const {cwd} = ui;
+        rpc.emit('new ssh', {
           isNewGroup: true,
           cwd,
           activeUid

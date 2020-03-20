@@ -15,6 +15,9 @@ const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
       setTimeout(app.createWindow, 0);
     }
   },
+  'tab:newSsh': focusedWindow => {
+    focusedWindow && focusedWindow.rpc.emit('termgroup add req ssh', {});
+  },
   'pane:splitRight': focusedWindow => {
     focusedWindow && focusedWindow.rpc.emit('split request vertical', {});
   },

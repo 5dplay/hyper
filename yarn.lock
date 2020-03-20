@@ -748,6 +748,21 @@
   resolved "https://registry.yarnpkg.com/@types/source-list-map/-/source-list-map-0.1.2.tgz#0078836063ffaf17412349bba364087e0ac02ec9"
   integrity sha512-K5K+yml8LTo9bWJI/rECfIPrGgxdpeNbj+d53lwN4QjW1MCwlkhUms+gtdzigTeUyBr09+u8BwOIY3MXvHdcsA==
 
+"@types/ssh2-streams@*":
+  version "0.1.6"
+  resolved "https://registry.npm.taobao.org/@types/ssh2-streams/download/@types/ssh2-streams-0.1.6.tgz#1ff5b1fe50c15f282efe9fd092c68494f8702bc2"
+  integrity sha1-H/Wx/lDBXygu/p/QksaElPhwK8I=
+  dependencies:
+    "@types/node" "*"
+
+"@types/ssh2@^0.5.41":
+  version "0.5.41"
+  resolved "https://registry.npm.taobao.org/@types/ssh2/download/@types/ssh2-0.5.41.tgz#70d52dcdc20da5ca373948b287766b0cae73801f"
+  integrity sha1-cNUtzcINpco3OUiyh3ZrDK5zgB8=
+  dependencies:
+    "@types/node" "*"
+    "@types/ssh2-streams" "*"
+
 "@types/styled-jsx@2.2.8":
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/@types/styled-jsx/-/styled-jsx-2.2.8.tgz#b50d13d8a3c34036282d65194554cf186bab7234"

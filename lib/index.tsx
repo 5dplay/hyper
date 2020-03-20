@@ -155,6 +155,10 @@ rpc.on('termgroup add req', ({activeUid}) => {
   store_.dispatch(termGroupActions.requestTermGroup(activeUid));
 });
 
+rpc.on('termgroup add req ssh', ({activeUid}) => {
+  store_.dispatch(termGroupActions.requestTermGroupSSH(activeUid));
+});
+
 rpc.on('split request horizontal', ({activeUid}) => {
   store_.dispatch(termGroupActions.requestHorizontalSplit(activeUid));
 });
