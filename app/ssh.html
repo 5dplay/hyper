@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hyper</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
+
+    <style>
+    </style>
+  </head>
+
+  <body>
+    <div id="mount_ssh">test for ssh</div>
+    <script>start = performance.now();</script>
+    <script src="renderer_ssh/bundle.js"></script>
+    <script>console.log('total init time', performance.now() - start);</script>
+  </body>
+</html>

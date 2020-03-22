@@ -145,6 +145,57 @@ const config: webpack.Configuration[] = [
       minimizer: [new TerserPlugin()]
     },
     target: 'node'
+  },
+  {
+    mode: 'none',
+    name: 'hyper',
+    resolve: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx']
+    },
+    devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
+    entry: './ssh_lib/index.tsx',
+    output: {
+      path: path.join(__dirname, 'target', 'renderer_ssh'),
+      filename: 'bundle.js'
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx|ts|tsx)$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader'
+        },
+        {
+          test: /\.json/,
+          loader: 'json-loader'
+        },
+        // for xterm.js
+        {
+          test: /\.css$/,
+          loader: 'style-loader!css-loader'
+        }
+      ]
+    },
+    plugins: [
+      new webpack.IgnorePlugin(/.*\.js.map$/i),
+
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify(nodeEnv)
+        }
+      }),
+      new Copy([
+        {
+          from: './assets',
+          to: './assets'
+        }
+      ])
+    ],
+    optimization: {
+      minimize: isProd ? true : false,
+      minimizer: [new TerserPlugin()]
+    },
+    target: 'electron-renderer'
   }
 ];
 

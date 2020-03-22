@@ -2,6 +2,9 @@ import {app, Menu, BrowserWindow} from 'electron';
 import {openConfig, getConfig} from './config';
 import {updatePlugins} from './plugins';
 import {installCLI} from './utils/cli-install';
+// Native
+import {resolve} from 'path';
+import isDev from 'electron-is-dev';
 
 const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
   'window:new': () => {
@@ -16,7 +19,10 @@ const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
     }
   },
   'tab:newSsh': focusedWindow => {
-    focusedWindow && focusedWindow.rpc.emit('termgroup add req ssh', {});
+    const url = `file://${resolve(isDev ? __dirname : app.getAppPath(), 'ssh.html')}`;
+    const sshWindow = new BrowserWindow ({width: 1000, height:800})
+    sshWindow.loadURL(url);
+    //focusedWindow && focusedWindow.rpc.emit('termgroup add req ssh', {});
   },
   'pane:splitRight': focusedWindow => {
     focusedWindow && focusedWindow.rpc.emit('split request vertical', {});
