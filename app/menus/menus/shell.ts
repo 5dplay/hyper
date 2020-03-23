@@ -17,9 +17,9 @@ export default (
         }
       },
       {
-        label: 'New Tab SSH',
+        label: 'New Session',
         click(item, focusedWindow) {
-          execCommand('tab:newSsh', focusedWindow);
+          execCommand('tab:newSsession', focusedWindow);
         }
       },
       {

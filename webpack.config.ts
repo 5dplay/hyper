@@ -153,7 +153,7 @@ const config: webpack.Configuration[] = [
       extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
     devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
-    entry: './ssh_lib/index.tsx',
+    entry: './lib_session/index.tsx',
     output: {
       path: path.join(__dirname, 'target', 'renderer_ssh'),
       filename: 'bundle.js'

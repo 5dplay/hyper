@@ -10,6 +10,11 @@
         "vendorPrefixes": false
       }
     ],
+    ["import", {
+      "libraryName": "antd",
+      "libraryDirectory": "es",
+      "style": "css"
+    }],
     "@babel/plugin-proposal-numeric-separator",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",

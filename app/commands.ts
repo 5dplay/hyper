@@ -2,6 +2,7 @@ import {app, Menu, BrowserWindow} from 'electron';
 import {openConfig, getConfig} from './config';
 import {updatePlugins} from './plugins';
 import {installCLI} from './utils/cli-install';
+
 // Native
 import {resolve} from 'path';
 import isDev from 'electron-is-dev';
@@ -18,9 +19,9 @@ const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
       setTimeout(app.createWindow, 0);
     }
   },
-  'tab:newSsh': focusedWindow => {
-    const url = `file://${resolve(isDev ? __dirname : app.getAppPath(), 'ssh.html')}`;
-    const sshWindow = new BrowserWindow ({width: 1000, height:800})
+  'tab:newSsession': focusedWindow => {
+    const url = `file://${resolve(isDev ? __dirname : app.getAppPath(), 'shell_session.html')}`;
+    const sshWindow = new BrowserWindow ({minWidth: 370, minHeight:190, backgroundColor: '#000000'});
     sshWindow.loadURL(url);
     //focusedWindow && focusedWindow.rpc.emit('termgroup add req ssh', {});
   },
