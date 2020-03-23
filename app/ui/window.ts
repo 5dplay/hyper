@@ -137,7 +137,7 @@ export function newWindow(
 
     sessions.set(options.uid, session);
     console.log('options.uid=' + options.uid);
-    
+
     rpc.emit('session add', {
       rows: options.rows,
       cols: options.cols,
@@ -184,7 +184,7 @@ export function newWindow(
     const {session, options} = createSshSession(extraOptions);
 
     sessions.set(options.uid, session);
-    console.log('ssh options.uid=' + options.uid)
+    console.log('ssh options.uid=' + options.uid);
     rpc.emit('session add', {
       rows: options.rows,
       cols: options.cols,
@@ -205,7 +205,6 @@ export function newWindow(
       sessions.delete(options.uid);
     });
   });
-
 
   rpc.on('exit', ({uid}) => {
     const session = sessions.get(uid);
@@ -228,7 +227,8 @@ export function newWindow(
       session.resize({cols, rows});
     }
   });
-  rpc.on('data', ({uid, data, escaped}) => {    //data from render process, only input.
+  rpc.on('data', ({uid, data, escaped}) => {
+    //data from render process, only input.
     const session = sessions.get(uid);
     if (session) {
       if (escaped) {

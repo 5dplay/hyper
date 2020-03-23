@@ -185,7 +185,6 @@ export function stopLog(uid?: string) {
   };
 }
 
-
 export function sendSessionData(uid: string | null, data: any, escaped?: any) {
   return (dispatch: HyperDispatch, getState: () => HyperState) => {
     dispatch({

@@ -5,10 +5,8 @@ import {getDecoratedEnv} from './plugins';
 import {productName, version} from './package.json';
 import * as config from './config';
 import {IPty, IWindowsPtyForkOptions, spawn as npSpawn} from 'node-pty';
-import { timingSafeEqual } from 'crypto';
 
 import {Client as sshClient, ClientChannel} from 'ssh2';
-
 
 const createNodePtyError = () =>
   new Error(
@@ -212,7 +210,6 @@ export class Session extends EventEmitter {
   }
 }
 
-
 interface SshSessionOptions {
   uid: string;
   rows: number;
@@ -257,7 +254,6 @@ export class SshSession extends EventEmitter {
       if (ret == false) {
         //Returns false if you should wait for the continue event before sending any more traffic.
       }
-
     });
   }
 
@@ -284,7 +280,7 @@ export class SshSession extends EventEmitter {
   exit() {
     this.destroy();
   }
-  
+
   destroy() {
     if (this.ptyStream) {
       try {

@@ -210,10 +210,10 @@ const reducer = (state = initialState, action: HyperActions) => {
         uid,
         sessionUid: action.uid
       });
-      var _state = state
-      .setIn(['termGroups', uid], termGroup)
-      .setIn(['activeSessions', uid], action.uid)
-      .set('activeRootGroup', uid);
+      const _state = state
+        .setIn(['termGroups', uid], termGroup)
+        .setIn(['activeSessions', uid], action.uid)
+        .set('activeRootGroup', uid);
       console.log(_state);
       return _state;
     }

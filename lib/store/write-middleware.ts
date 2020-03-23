@@ -13,7 +13,6 @@ const writeMiddleware: Middleware = () => next => action => {
     //fs.appendFileSync('./' + action.uid + '.log', action.data);
     //console.log(term.term.buffer.getLine(term.term.buffer.cursorY).translateToString());
     if (term) {
-
       term.term.write(action.data);
       if (term.logging) {
         for (let i = term.lastLogRow + 1; i < term.term.buffer.baseY + term.term.buffer.cursorY; i++) {
@@ -24,7 +23,6 @@ const writeMiddleware: Middleware = () => next => action => {
       } else {
         term.lastLogRow = term.term.buffer.baseY + term.term.buffer.cursorY - 1;
       }
-
     }
   }
   next(action);

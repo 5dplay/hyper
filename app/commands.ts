@@ -19,9 +19,9 @@ const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
       setTimeout(app.createWindow, 0);
     }
   },
-  'tab:newSsession': focusedWindow => {
+  'tab:newSsession': () => {
     const url = `file://${resolve(isDev ? __dirname : app.getAppPath(), 'shell_session.html')}`;
-    const sshWindow = new BrowserWindow ({minWidth: 370, minHeight:190, backgroundColor: '#000000'});
+    const sshWindow = new BrowserWindow({minWidth: 370, minHeight: 190, backgroundColor: '#000000'});
     sshWindow.loadURL(url);
     //focusedWindow && focusedWindow.rpc.emit('termgroup add req ssh', {});
   },
@@ -130,7 +130,7 @@ const commands: Record<string, (focusedWindow?: BrowserWindow) => void> = {
   },
   'session:stopLog': focusedWindow => {
     focusedWindow && focusedWindow.rpc.emit('session stop log');
-  },
+  }
 };
 
 //Special numeric command

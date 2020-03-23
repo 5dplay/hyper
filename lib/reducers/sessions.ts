@@ -142,17 +142,17 @@ const reducer = (state: ImmutableType<sessionState> = initialState, action: Hype
         },
         {deep: true}
       );
-      case SESSION_STOP_LOG:
-        return state.merge(
-          {
-            sessions: {
-              [state.activeUid!]: {
-                logging: false
-              }
+    case SESSION_STOP_LOG:
+      return state.merge(
+        {
+          sessions: {
+            [state.activeUid!]: {
+              logging: false
             }
-          },
-          {deep: true}
-        );
+          }
+        },
+        {deep: true}
+      );
     default:
       return state;
   }
